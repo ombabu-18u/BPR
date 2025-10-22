@@ -9,4 +9,5 @@ import com.billreminder.billpaymentreminder.entity.BillCategory;
 public interface BillCategoryRepository extends JpaRepository<BillCategory, Long> {
     BillCategory findByName(String name);
     boolean existsByName(String name);
+    boolean existsById(Long id);
 }

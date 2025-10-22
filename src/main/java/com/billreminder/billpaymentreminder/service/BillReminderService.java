@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.billreminder.billpaymentreminder.entity.Bill;
-import com.billreminder.billpaymentreminder.entity.BillCategory;
 import com.billreminder.billpaymentreminder.entity.User;
 
 @Service
@@ -67,11 +66,11 @@ public class BillReminderService {
         // For now, we'll just log it and you can implement actual notifications later
         
         String message = String.format(
-            "Reminder: Bill '%s' for $%.2f is due on %s. Category: %s",
+            "Reminder: Bill '%s' for $%.2f is due on %s. Category ID: %d",
             bill.getBillName(),
             bill.getAmount().doubleValue(),
             bill.getDueDate(),
-            bill.getCategory().getName()
+            bill.getCategoryId()  // Use categoryId instead of category.getName()
         );
         
         logger.info("📧 [SIMULATED EMAIL] To: {} - {}", 
@@ -101,35 +100,29 @@ public class BillReminderService {
     }
 
     // Additional method for manual reminder testing
-    // Additional method for manual reminder testing
-public void sendTestReminder() {
-    logger.info("🧪 Sending test reminder...");
-    
-    try {
-        // Get a real category from the database for testing
-        BillCategory utilitiesCategory = new BillCategory();
-        utilitiesCategory.setId(1L);
-        utilitiesCategory.setName("Utilities");
+    public void sendTestReminder() {
+        logger.info("🧪 Sending test reminder...");
         
-        // Get the test user
-        User testUser = new User();
-        testUser.setId(1L); // Assuming test user has ID 1
-        testUser.setEmail("test@example.com");
-        testUser.setName("Test User");
-        
-        // Create a more realistic test bill
-        Bill testBill = new Bill();
-        testBill.setBillName("Test Electricity Bill");
-        testBill.setAmount(java.math.BigDecimal.valueOf(99.99));
-        testBill.setDueDate(LocalDate.now().plusDays(2));
-        testBill.setCategory(utilitiesCategory);
-        testBill.setUser(testUser);
-        
-        sendReminder(testBill);
-        logger.info("✅ Test reminder sent successfully!");
-    } catch (Exception e) {
-        logger.error("❌ Error sending test reminder: {}", e.getMessage());
-        throw new RuntimeException("Test reminder failed: " + e.getMessage());
+        try {
+            // Get the test user
+            User testUser = new User();
+            testUser.setId(1L); // Assuming test user has ID 1
+            testUser.setEmail("test@example.com");
+            testUser.setName("Test User");
+            
+            // Create a more realistic test bill
+            Bill testBill = new Bill();
+            testBill.setBillName("Test Electricity Bill");
+            testBill.setAmount(java.math.BigDecimal.valueOf(99.99));
+            testBill.setDueDate(LocalDate.now().plusDays(2));
+            testBill.setCategoryId(1L);  // Use categoryId instead of Category object
+            testBill.setUser(testUser);
+            
+            sendReminder(testBill);
+            logger.info("✅ Test reminder sent successfully!");
+        } catch (Exception e) {
+            logger.error("❌ Error sending test reminder: {}", e.getMessage());
+            throw new RuntimeException("Test reminder failed: " + e.getMessage());
+        }
     }
-}
 }

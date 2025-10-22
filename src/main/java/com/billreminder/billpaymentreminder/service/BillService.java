@@ -6,17 +6,20 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.billreminder.billpaymentreminder.entity.Bill;
 import com.billreminder.billpaymentreminder.entity.User;
 import com.billreminder.billpaymentreminder.repository.BillRepository;
 
 @Service
+@Transactional
 public class BillService {
 
     @Autowired
     private BillRepository billRepository;
 
+    @Transactional
     public Bill createBill(Bill bill) {
         validateBill(bill);
         return billRepository.save(bill);
@@ -24,7 +27,7 @@ public class BillService {
 
     public Bill updateBill(Long billId, Bill billDetails) {
         Bill bill = billRepository.findById(billId)
-            .orElseThrow(() -> new RuntimeException("Bill not found with id: " + billId));
+                .orElseThrow(() -> new RuntimeException("Bill not found with id: " + billId));
 
         if (billDetails.getBillName() != null) {
             bill.setBillName(billDetails.getBillName());
@@ -35,8 +38,8 @@ public class BillService {
         if (billDetails.getDueDate() != null) {
             bill.setDueDate(billDetails.getDueDate());
         }
-        if (billDetails.getCategory() != null) {
-            bill.setCategory(billDetails.getCategory());
+        if (billDetails.getCategoryId() != null) {
+            bill.setCategoryId(billDetails.getCategoryId());
         }
 
         validateBill(bill);
@@ -96,4 +99,6 @@ public class BillService {
         bill.setReminderSent(reminderSent);
         return billRepository.save(bill);
     }
+    
+    // You can remove the createBillWithCategoryId method since we're using the regular createBill now
 }

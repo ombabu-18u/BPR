@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +27,7 @@ import lombok.Data;
 @Entity
 @Table(name = "bills")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,9 +59,14 @@ public class Bill {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"bills", "password"})
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private BillCategory category;
+    // SIMPLE CATEGORY ID APPROACH
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId;
+
+    // Transient field for frontend display
+    @Transient
+    private String categoryName;
 }
