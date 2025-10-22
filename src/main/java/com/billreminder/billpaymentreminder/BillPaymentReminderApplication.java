@@ -9,8 +9,10 @@ import com.billreminder.billpaymentreminder.entity.User;
 import com.billreminder.billpaymentreminder.repository.BillCategoryRepository;
 import com.billreminder.billpaymentreminder.service.BillService;
 import com.billreminder.billpaymentreminder.service.UserService;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class BillPaymentReminderApplication {
 
     public static void main(String[] args) {

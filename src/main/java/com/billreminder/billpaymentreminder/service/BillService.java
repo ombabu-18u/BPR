@@ -87,4 +87,13 @@ public class BillService {
             throw new RuntimeException("Amount must be greater than zero");
         }
     }
+
+    // Add this method to BillService class
+    public Bill updateReminderStatus(Long billId, Boolean reminderSent) {
+        Bill bill = billRepository.findById(billId)
+            .orElseThrow(() -> new RuntimeException("Bill not found with id: " + billId));
+        
+        bill.setReminderSent(reminderSent);
+        return billRepository.save(bill);
+    }
 }
