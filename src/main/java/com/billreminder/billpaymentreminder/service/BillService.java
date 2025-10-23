@@ -99,6 +99,12 @@ public class BillService {
         bill.setReminderSent(reminderSent);
         return billRepository.save(bill);
     }
+
+    public List<Bill> getUpcomingBillsForUser(User user, int days) {
+    LocalDate start = LocalDate.now();
+    LocalDate end = start.plusDays(days);
+    return billRepository.findByUserAndDueDateBetweenAndPaidFalse(user, start, end);
+}
     
     // You can remove the createBillWithCategoryId method since we're using the regular createBill now
 }

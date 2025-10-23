@@ -50,7 +50,8 @@ private BillCategoryRepository billCategoryRepository;
                 .toList();
             
             var totalPending = billService.getTotalPendingAmount(user);
-            var upcomingBills = billService.getUpcomingBills(7);
+            // In DashboardController - replace the upcomingBills line:
+var upcomingBills = billService.getUpcomingBillsForUser(user, 7);
             
             model.addAttribute("pendingBillsCount", pendingBills.size());
             model.addAttribute("totalPendingAmount", totalPending);

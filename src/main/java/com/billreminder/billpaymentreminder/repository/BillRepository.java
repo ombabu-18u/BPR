@@ -21,6 +21,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     
     // Find overdue bills (due date passed and not paid)
     List<Bill> findByDueDateBeforeAndPaidFalse(LocalDate date);
+
+    List<Bill> findByUserAndDueDateBetweenAndPaidFalse(User user, LocalDate startDate, LocalDate endDate);
     
     // Find bills due soon (within next 3 days and not paid)
     List<Bill> findByDueDateBetweenAndPaidFalse(LocalDate startDate, LocalDate endDate);
