@@ -198,7 +198,7 @@ spring.jpa.show-sql=true
 
 ### Server Settings
 ```properties
-server.port=8080
+server.port=8080 (Default)
 ```
 
 ### Thymeleaf Settings
